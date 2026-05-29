@@ -1,7 +1,9 @@
 import streamlit as st
 import os
 from dotenv import load_dotenv
-
+from utils.loader import load_and_chunk
+from utils.embedder import get_embeddings
+from utils.retriever import create_vector_store
 # PDF Loader
 from langchain_community.document_loaders import PyPDFLoader
 
@@ -82,7 +84,9 @@ if uploaded_file:
         chunks = splitter.split_documents(documents)
 
         if not chunks:
-            st.error("❌ No chunks created")
+from utils.loader import load_and_chunk
+from utils.embedder import get_embeddings
+from utils.retriever import create_vector_store            st.error("❌ No chunks created")
             st.stop()
 
         st.success(f"✅ Chunks Created: {len(chunks)}")
@@ -164,3 +168,11 @@ if uploaded_file:
     except Exception as e:
 
         st.error(f"❌ Error: {str(e)}")
+chunks = load_and_chunk("data/your_document.pdf")
+
+embeddings = get_embeddings()
+
+vector_store = create_vector_store(
+    chunks,
+    embeddings
+)
